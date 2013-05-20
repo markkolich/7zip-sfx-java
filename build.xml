@@ -1,0 +1,59 @@
+<project name="7zipexample" default="package.7zipexample">
+    
+    <property name="src.dir" location="${basedir}/src/com/kolich"/>
+    <property name="build.dir" location="${basedir}/build"/>
+	<property name="launcher.dir" location="${basedir}/launcher"/>
+	<property name="7zip.exe.dir" location="${basedir}/7zip"/>
+	<property name="sfx.dir" location="${basedir}/sfx"/>
+    <property name="dist.dir" location="${basedir}/dist"/>
+    
+    <target name="clean.7zipexample" depends="clean.build.7zipexample, clean.dist.7zipexample" />
+	
+	<target name="clean.build.7zipexample">
+      <delete includeemptydirs="true">
+        <fileset dir="${build.dir}" includes="**/*" />
+      </delete>
+    </target>
+	
+	<target name="clean.dist.7zipexample">
+      <delete includeemptydirs="true">
+        <fileset dir="${dist.dir}" includes="**/*" />
+      	<fileset dir="${launcher.dir}" includes="app.jar" />
+      	<fileset dir="${launcher.dir}" includes="app.7z" />
+      </delete>
+    </target>
+ 
+    <target name="package.7zipexample" depends="clean.7zipexample">
+    	
+    	<!-- compile the source -->
+        <javac destdir="${build.dir}" srcdir="${src.dir}">
+        	<include name="**/*.java"/>
+		</javac>
+    	
+    	<!-- create a runnable jar -->
+    	<jar destfile="${launcher.dir}/app.jar" manifest="Manifest.mf">
+			<fileset dir="${build.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</jar>
+    	
+    	<!-- compress all of the files we need to down with 7zip -->
+		<exec executable="${7zip.exe.dir}/7z.exe" failonerror="true">
+			<arg value="a" />
+			<arg value="-t7z" />
+			<arg value="-r" />
+			<arg value="${launcher.dir}\app.7z" />
+			<arg value="${launcher.dir}" />
+		</exec>
+    	
+    	<!-- concat the files we need together to produce a binary
+    			launcher -->
+    	<concat destfile="${dist.dir}/start.exe" binary="yes">
+			<fileset file="${sfx.dir}/7zSD.sfx" />
+			<fileset file="${sfx.dir}/app.tag" />
+			<fileset file="${launcher.dir}/app.7z" />
+		</concat>
+    	
+    </target>
+    
+</project>

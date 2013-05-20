@@ -35,12 +35,12 @@ import javax.swing.SwingUtilities;
 
 public class StartHere {
 	
-	private File workingDir_;
-	private File tempDir_;
+	private final File workingDir_;
+	private final File tempDir_;
 	
 	public StartHere(File root, File temp){
-		this.workingDir_ = root;
-		this.tempDir_ = temp;
+		workingDir_ = root;
+		tempDir_ = temp;
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class StartHere {
 	 * @return
 	 */
 	public File getWorkingDir(){
-		return this.workingDir_;
+		return workingDir_;
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class StartHere {
 	 * @return
 	 */
 	public File getTempDir(){
-		return this.tempDir_;
+		return tempDir_;
 	}
 
 	public static void main(String[] args)
@@ -80,7 +80,8 @@ public class StartHere {
 		
 		final StartHere sh = new StartHere(root, temp);		
 		Runnable worker = new Runnable() {
-		    public void run() {
+		    @Override
+			public void run() {
 		    	showMessageDialog(sh);
 		    	System.exit(0);
 		    }

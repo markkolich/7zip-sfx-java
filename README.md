@@ -1,4 +1,4 @@
 7zip-sfx-java
 =============
 
-An example of packaging a Java application, with a complete self-sustaining Java Runtime, into a single Windows executable using 7-Zip SFX.
+Package and ship your Java application as a single Windows executable with 7-Zip SFX. Requires no external Java installation by the end-user, a full JRE is shipped inside the executable and extracted at runtime.
